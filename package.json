@@ -1,0 +1,69 @@
+{
+  "name": "@nkardaz/vue-kit",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "author": "Yalla Nkardaz",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DemerNkardaz/vue-kit.git"
+  },
+  "homepage": "https://github.com/DemerNkardaz/vue-kit#readme",
+  "bugs": {
+    "url": "https://github.com/DemerNkardaz/vue-kit/issues"
+  },
+  "type": "module",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "bundleSizeLimit": 102400,
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build:types": "vue-tsc --project tsconfig.build.json --emitDeclarationOnly",
+    "build": "vite build && npm run build:types",
+    "dev": "esbuild --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
+    "type-check": "vue-tsc --noEmit",
+    "test": "vitest --run",
+    "test:coverage": "vitest --run --coverage",
+    "prepublishOnly": "npm run build && npm run lint && npm run type-check",
+    "knip": "knip",
+    "e18e": "npx @e18e/cli analyze",
+    "analyze": "npm run knip || npm run e18e"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.0.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vitest/coverage-v8": "^4.1.9",
+    "@vue/compiler-sfc": "^3.5.38",
+    "@vue/test-utils": "^2.4.11",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.5.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.9.2",
+    "knip": "^6.17.1",
+    "prettier": "^3.8.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1",
+    "vite": "^8.0.16",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.9",
+    "vue-eslint-parser": "^10.4.1",
+    "vue-tsc": "^3.3.5"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.38"
+  }
+}
