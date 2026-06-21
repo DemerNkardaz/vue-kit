@@ -1,11 +1,11 @@
 import { computed, type ComputedRef } from 'vue';
-import type { CellGeometry, PxHandler } from '../components/patterns/types';
+import type { CellGeometry, PxHandler } from '@/components/patterns/types';
 
 export interface CellGeometryInput {
-  sizePx: number;
-  gapPx: number;
-  borderRadius: number | string;
-  pxHandler: PxHandler;
+	sizePx: number;
+	gapPx: number;
+	borderRadius: number | string;
+	pxHandler: PxHandler;
 }
 
 /**
@@ -20,16 +20,16 @@ export interface CellGeometryInput {
  * реактивным.
  */
 export function useCellGeometry(props: CellGeometryInput): ComputedRef<CellGeometry> {
-  return computed(() => {
-    const cell = props.pxHandler(props.sizePx);
-    const gap = props.pxHandler(props.gapPx);
-    const total = cell + gap;
+	return computed(() => {
+		const cell = props.pxHandler(props.sizePx);
+		const gap = props.pxHandler(props.gapPx);
+		const total = cell + gap;
 
-    const rx =
-      typeof props.borderRadius === 'number'
-        ? props.pxHandler(props.borderRadius)
-        : (parseFloat(props.borderRadius as string) / 100) * (cell / 2);
+		const rx =
+			typeof props.borderRadius === 'number'
+				? props.pxHandler(props.borderRadius)
+				: (parseFloat(props.borderRadius as string) / 100) * (cell / 2);
 
-    return { cell, gap, total, rx };
-  });
+		return { cell, gap, total, rx };
+	});
 }

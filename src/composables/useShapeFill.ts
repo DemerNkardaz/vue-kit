@@ -1,5 +1,5 @@
 import { computed, type ComputedRef } from 'vue';
-import { hexToRgba } from '../utils/color';
+import { hexToRgba } from '@/utils/color';
 
 export interface ShapeFillProps {
 	color: string;

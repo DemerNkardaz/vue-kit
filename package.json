@@ -22,15 +22,14 @@
       "import": "./dist/index.mjs"
     },
     "./patterns": {
-      "types": "./dist/patterns/index.d.ts",
-      "import": "./dist/patterns/index.mjs"
+      "types": "./dist/components/patterns/index.d.ts",
+      "import": "./dist/components/patterns/index.mjs"
     },
     "./primitives": {
-      "types": "./dist/primitives/index.d.ts",
-      "import": "./dist/primitives/index.mjs"
+      "types": "./dist/components/primitives/index.d.ts",
+      "import": "./dist/components/primitives/index.mjs"
     }
   },
-  "bundleSizeLimit": 102400,
   "sideEffects": false,
   "engines": {
     "node": ">=24.0.0"
