@@ -20,6 +20,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
+    },
+    "./patterns": {
+      "types": "./dist/patterns/index.d.ts",
+      "import": "./dist/patterns/index.mjs"
+    },
+    "./primitives": {
+      "types": "./dist/primitives/index.d.ts",
+      "import": "./dist/primitives/index.mjs"
     }
   },
   "bundleSizeLimit": 102400,
@@ -28,8 +36,10 @@
     "node": ">=24.0.0"
   },
   "scripts": {
+    "generate": "node tools/generate-sets-index.mts",
+    "build:vite": "vite build",
     "build:types": "vue-tsc --project tsconfig.build.json --emitDeclarationOnly",
-    "build": "vite build && npm run build:types",
+    "build": "npm run generate && npm run build:vite && npm run build:types",
     "dev": "esbuild --watch",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
