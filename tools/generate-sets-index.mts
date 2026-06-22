@@ -1,10 +1,15 @@
 import { readdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const directories = ['patterns', 'primitives'];
+const directories = {
+  defaults: ['components/patterns', 'components/primitives'],
+  wildcard: ['utils', 'composables'],
+};
 
-for (const dir of directories) {
-  const targetDir = join(process.cwd(), 'src', 'components', dir);
+const srcRoot = join(process.cwd(), 'src');
+
+function generateDefaultIndex(dir: string) {
+  const targetDir = join(srcRoot, dir);
 
   const files = readdirSync(targetDir)
     .filter((file) => file.endsWith('.vue'))
@@ -18,7 +23,6 @@ for (const dir of directories) {
     .join('\n');
 
   const hasTypes = existsSync(join(targetDir, 'types.ts'));
-
   const typesExport = hasTypes ? `export * from './types';` : '';
 
   const content =
@@ -31,6 +35,35 @@ for (const dir of directories) {
   console.log(
     `Generated ${dir}/index.ts (${files.length} components${hasTypes ? ', +types' : ''})`
   );
+}
+
+function generateWildcardIndex(dir: string) {
+  const targetDir = join(srcRoot, dir);
+
+  const files = readdirSync(targetDir)
+    .filter((file) => file.endsWith('.ts') || file.endsWith('.js'))
+    .filter((file) => file !== 'index.ts');
+
+  const exports = files
+    .map((file) => {
+      const name = file.replace(/\.(ts|js)$/, '');
+      return `export * from './${name}';`;
+    })
+    .join('\n');
+
+  const content = '// AUTO-GENERATED FILE. DO NOT EDIT.\n\n' + exports + '\n';
+
+  writeFileSync(join(targetDir, 'index.ts'), content);
+
+  console.log(`Generated wildcard index for ${dir}`);
+}
+
+for (const dir of directories.defaults) {
+  generateDefaultIndex(dir);
+}
+
+for (const dir of directories.wildcard) {
+  generateWildcardIndex(dir);
 }
 
 console.log('Done.');

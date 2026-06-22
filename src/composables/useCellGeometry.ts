@@ -15,9 +15,23 @@ export interface CellGeometryInput {
  *
  * Используется в Checkboard / QuadsGrid / Quads.
  *
- * Важно: принимает reactive-объект пропсов целиком (а не его
- * деструктуризацию), чтобы доступ к полям внутри computed оставался
- * реактивным.
+ * Важно: принимает объект целиком (а не деструктуризацию его полей),
+ * чтобы доступ к полям внутри computed оставался реактивным.
+ *
+ * Это не обязательно должен быть сам `props` — pxHandler теперь часто
+ * приходит не из пропа, а из локального computed (proп ?? инжект из
+ * VueKitPlugin), поэтому сюда передают объект-адаптер с геттерами:
+ *
+ *   useCellGeometry({
+ *     get sizePx() { return props.sizePx; },
+ *     get gapPx() { return props.gapPx; },
+ *     get borderRadius() { return props.borderRadius; },
+ *     get pxHandler() { return pxHandler.value; },
+ *   });
+ *
+ * Геттеры читаются синхронно внутри тела computed-эффекта этого
+ * composable, поэтому реактивные обращения (и к props, и к pxHandler
+ * как к ref) трекаются корректно.
  */
 export function useCellGeometry(props: CellGeometryInput): ComputedRef<CellGeometry> {
 	return computed(() => {

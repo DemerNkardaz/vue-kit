@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { QuadsProps } from './types';
+import { useVueKit } from '@/inject';
 import { useCellGeometry } from '@/composables/useCellGeometry';
 import { useShapeFill } from '@/composables/useShapeFill';
 import { resolveDimension } from '@/utils/dimension';
@@ -20,10 +21,26 @@ const props = withDefaults(defineProps<Props>(), {
   count: 1,
   w: undefined,
   h: undefined,
-  pxHandler: (val: number) => val,
+  pxHandler: undefined,
 });
 
-const geometry = useCellGeometry(props);
+const { pxHandler: injectedPxHandler } = useVueKit();
+const pxHandler = computed(() => props.pxHandler ?? injectedPxHandler);
+
+const geometry = useCellGeometry({
+  get sizePx() {
+    return props.sizePx;
+  },
+  get gapPx() {
+    return props.gapPx;
+  },
+  get borderRadius() {
+    return props.borderRadius;
+  },
+  get pxHandler() {
+    return pxHandler.value;
+  },
+});
 
 // Какие клетки сетки закрашены — специфично только для Quads,
 // поэтому не выносится в общий composable.
@@ -70,8 +87,8 @@ const svgSize = computed(() => {
 });
 
 const domSize = computed(() => ({
-  w: props.w !== undefined ? resolveDimension(props.w, props.pxHandler) : `${svgSize.value.w}px`,
-  h: props.h !== undefined ? resolveDimension(props.h, props.pxHandler) : `${svgSize.value.h}px`,
+  w: props.w !== undefined ? resolveDimension(props.w, pxHandler.value) : `${svgSize.value.w}px`,
+  h: props.h !== undefined ? resolveDimension(props.h, pxHandler.value) : `${svgSize.value.h}px`,
 }));
 
 const { fillColor, bgFill } = useShapeFill(props);

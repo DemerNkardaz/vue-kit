@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { StripesProps } from './types';
+import { useVueKit } from '@/inject';
 import { useShapeFill } from '@/composables/useShapeFill';
 import { resolveDimension } from '@/utils/dimension';
 import { generatePatternId } from '@/utils/patternId';
@@ -18,23 +19,26 @@ const props = withDefaults(defineProps<Props>(), {
   opacity: 1,
   bgColor: undefined,
   bgOpacity: 1,
-  pxHandler: (val: number) => val,
+  pxHandler: undefined,
 });
+
+const { pxHandler: injectedPxHandler } = useVueKit();
+const pxHandler = computed(() => props.pxHandler ?? injectedPxHandler);
 
 const patternId = generatePatternId('stripes');
 
 // Геометрия полос отличается от "клеточной" (нет borderRadius/rx),
 // поэтому считается локально, а не через useCellGeometry.
 const stripeGeometry = computed(() => {
-  const stripeW = props.pxHandler(props.stripesPx);
-  const gap = props.pxHandler(props.gapPx);
+  const stripeW = pxHandler.value(props.stripesPx);
+  const gap = pxHandler.value(props.gapPx);
   const total = stripeW + gap;
   return { stripeW, gap, total };
 });
 
 const size = computed(() => ({
-  w: resolveDimension(props.w, props.pxHandler),
-  h: resolveDimension(props.h, props.pxHandler),
+  w: resolveDimension(props.w, pxHandler.value),
+  h: resolveDimension(props.h, pxHandler.value),
 }));
 
 const { fillColor: strokeColor, bgFill } = useShapeFill(props);

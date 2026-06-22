@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Direction, FrameOutlineProps } from './types';
+import { useVueKit } from '@/inject';
 import { useShapeFill } from '@/composables/useShapeFill';
 
-export type { Direction };
+// export type { Direction };
 
 type Props = FrameOutlineProps;
 
@@ -20,19 +21,22 @@ const props = withDefaults(defineProps<Props>(), {
   lengthRight: undefined,
   lengthBottom: undefined,
   lengthLeft: undefined,
-  pxHandler: (val: number) => val,
+  pxHandler: undefined,
 });
+
+const { pxHandler: injectedPxHandler } = useVueKit();
+const pxHandler = computed(() => props.pxHandler ?? injectedPxHandler);
 
 function resolveLength(val: number | string | undefined, fallback: number | string): number {
   const v = val ?? fallback;
-  if (typeof v === 'number') return props.pxHandler(v);
+  if (typeof v === 'number') return pxHandler.value(v);
   return parseFloat(v);
 }
 
 const { fillColor, bgFill } = useShapeFill(props);
 
-const t = computed(() => props.pxHandler(props.thicknessPx));
-const rx = computed(() => props.pxHandler(props.borderRadius));
+const t = computed(() => pxHandler.value(props.thicknessPx));
+const rx = computed(() => pxHandler.value(props.borderRadius));
 
 // Длины для каждой стороны в px (уже fluid)
 const lengths = computed(() => ({

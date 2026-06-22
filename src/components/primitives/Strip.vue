@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { StripProps } from './types';
+import { useVueKit } from '@/inject';
 import { hexToRgba } from '@/utils/color';
 import { resolveDimension } from '@/utils/dimension';
 
@@ -18,8 +19,11 @@ const props = withDefaults(defineProps<Props>(), {
   cornerTopRight: () => [0, 0],
   cornerBottomRight: () => [0, 0],
   cornerBottomLeft: () => [0, 0],
-  pxHandler: (val: number) => val,
+  pxHandler: undefined,
 });
+
+const { pxHandler: injectedPxHandler } = useVueKit();
+const pxHandler = computed(() => props.pxHandler ?? injectedPxHandler);
 
 // У Strip нет понятия фона (bgColor/bgOpacity), поэтому здесь не нужен
 // useShapeFill — он считает ещё и bgFill, который Strip не использует.
@@ -33,12 +37,12 @@ const baseStripSize = computed(() => ({
 const domSize = computed(() => ({
   w:
     props.w !== undefined
-      ? resolveDimension(props.w, props.pxHandler)
-      : resolveDimension(props.stripW, props.pxHandler),
+      ? resolveDimension(props.w, pxHandler.value)
+      : resolveDimension(props.stripW, pxHandler.value),
   h:
     props.h !== undefined
-      ? resolveDimension(props.h, props.pxHandler)
-      : resolveDimension(props.stripH, props.pxHandler),
+      ? resolveDimension(props.h, pxHandler.value)
+      : resolveDimension(props.stripH, pxHandler.value),
 }));
 
 const corners = computed(() => {
@@ -49,10 +53,10 @@ const corners = computed(() => {
   const [blx, bly] = props.cornerBottomLeft;
 
   return {
-    TL: { x: props.pxHandler(0 + tlx), y: props.pxHandler(0 + tly) },
-    TR: { x: props.pxHandler(w + trx), y: props.pxHandler(0 + try_) },
-    BR: { x: props.pxHandler(w + brx), y: props.pxHandler(h + bry) },
-    BL: { x: props.pxHandler(0 + blx), y: props.pxHandler(h + bly) },
+    TL: { x: pxHandler.value(0 + tlx), y: pxHandler.value(0 + tly) },
+    TR: { x: pxHandler.value(w + trx), y: pxHandler.value(0 + try_) },
+    BR: { x: pxHandler.value(w + brx), y: pxHandler.value(h + bry) },
+    BL: { x: pxHandler.value(0 + blx), y: pxHandler.value(h + bly) },
   };
 });
 
@@ -75,7 +79,7 @@ const svgSize = computed(() => ({
 const pathD = computed(() => {
   const { TL, TR, BR, BL } = corners.value;
   const { minX, minY } = viewBox.value;
-  const r = props.pxHandler(props.borderRadius);
+  const r = pxHandler.value(props.borderRadius);
 
   const tl = { x: TL.x - minX, y: TL.y - minY };
   const tr = { x: TR.x - minX, y: TR.y - minY };

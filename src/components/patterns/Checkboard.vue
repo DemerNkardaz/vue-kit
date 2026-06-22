@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { PatternCellProps } from './types';
+import type { PatternCellProps, PxHandler } from './types';
+import { useVueKit } from '@/inject';
 import { useCellGeometry } from '@/composables/useCellGeometry';
 import { useShapeFill } from '@/composables/useShapeFill';
 import { resolveSnappedDimension } from '@/utils/dimension';
@@ -19,16 +20,32 @@ const props = withDefaults(defineProps<Props>(), {
   borderRadius: 0,
   w: '100%',
   h: '100%',
-  pxHandler: (val: number) => val,
+  pxHandler: undefined,
 });
+
+const { pxHandler: injectedPxHandler } = useVueKit();
+const pxHandler = computed(() => props.pxHandler ?? injectedPxHandler);
 
 const patternId = generatePatternId('squares');
 
-const geometry = useCellGeometry(props);
+const geometry = useCellGeometry({
+  get sizePx() {
+    return props.sizePx;
+  },
+  get gapPx() {
+    return props.gapPx;
+  },
+  get borderRadius() {
+    return props.borderRadius;
+  },
+  get pxHandler(): PxHandler {
+    return pxHandler.value;
+  },
+});
 
 const size = computed(() => ({
-  w: resolveSnappedDimension(props.w, props.pxHandler, geometry.value.total),
-  h: resolveSnappedDimension(props.h, props.pxHandler, geometry.value.total),
+  w: resolveSnappedDimension(props.w, pxHandler.value, geometry.value.total),
+  h: resolveSnappedDimension(props.h, pxHandler.value, geometry.value.total),
 }));
 
 const { fillColor, bgFill } = useShapeFill(props);

@@ -1,4 +1,4 @@
-import type { PxHandler } from '../components/patterns/types';
+import type { PxHandler } from '@/components/patterns/types';
 
 /**
  * Преобразует числовое значение размера в px-строку через pxHandler,
@@ -8,10 +8,10 @@ import type { PxHandler } from '../components/patterns/types';
  * (Quads, Stripes).
  */
 export function resolveDimension(val: number | string, pxHandler: PxHandler): string {
-  if (typeof val === 'number') {
-    return `${pxHandler(val)}px`;
-  }
-  return val;
+	if (typeof val === 'number') {
+		return `${pxHandler(val)}px`;
+	}
+	return val;
 }
 
 /**
@@ -20,14 +20,14 @@ export function resolveDimension(val: number | string, pxHandler: PxHandler): st
  * контейнера (Checkboard, QuadsGrid).
  */
 export function resolveSnappedDimension(
-  val: number | string,
-  pxHandler: PxHandler,
-  step: number,
+	val: number | string,
+	pxHandler: PxHandler,
+	step: number
 ): string {
-  if (typeof val === 'number') {
-    const fluidVal = pxHandler(val);
-    const stretched = Math.ceil(fluidVal / step) * step;
-    return `${stretched}px`;
-  }
-  return val;
+	if (typeof val === 'number') {
+		const fluidVal = pxHandler(val);
+		const stretched = Math.ceil(fluidVal / step) * step;
+		return `${stretched}px`;
+	}
+	return val;
 }
