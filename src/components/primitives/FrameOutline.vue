@@ -4,7 +4,7 @@ import type { Direction, FrameOutlineProps } from './types';
 import { useVueKit } from '@/inject';
 import { useShapeFill } from '@/composables/useShapeFill';
 
-// export type { Direction };
+export type { Direction };
 
 type Props = FrameOutlineProps;
 

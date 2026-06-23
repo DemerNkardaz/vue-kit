@@ -13,7 +13,6 @@ function getRootFontSize(): number {
 export const rootFontSize = ref<number>(getRootFontSize());
 
 export function updateRootFontSize(): void {
-	console.log('updateRootFontSize', getRootFontSize());
 	rootFontSize.value = getRootFontSize();
 }
 
