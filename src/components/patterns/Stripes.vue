@@ -1,3 +1,33 @@
+<script lang="ts">
+/**
+ * The `Stripes` component renders a repeating diagonal or linear stripe pattern
+ * within an SVG container. It is highly customizable, supporting adaptive scaling,
+ * adjustable stripe thickness, gaps, and rotation angles.
+ *
+ * @component
+ * @example
+ * Basic usage with default settings
+ *
+ * ```vue
+ * <Stripes />
+ * ```
+ *
+ * @example
+ * Customizing stripe dimensions and rotation
+ *
+ * ```vue
+ * <Stripes
+ * :stripesPx="2"
+ * :gapPx="6"
+ * :angle="45"
+ * color="#3498db"
+ * opacity="0.8"
+ * />
+ * ```
+ */
+export default {};
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { StripesProps } from './types';
@@ -27,8 +57,6 @@ const pxHandler = computed(() => props.pxHandler ?? injectedPxHandler);
 
 const patternId = generatePatternId('stripes');
 
-// Геометрия полос отличается от "клеточной" (нет borderRadius/rx),
-// поэтому считается локально, а не через useCellGeometry.
 const stripeGeometry = computed(() => {
   const stripeW = pxHandler.value(props.stripesPx);
   const gap = pxHandler.value(props.gapPx);

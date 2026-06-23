@@ -1,37 +1,43 @@
 import { computed, type ComputedRef } from 'vue';
-import type { CellGeometry, PxHandler } from '@/components/patterns/types';
+import type { CellGeometry } from '@/components/patterns/types';
+import type { PxHandler } from '@/types/shared';
 
+/**
+ * Input parameters for calculating cell geometry.
+ */
 export interface CellGeometryInput {
+	/** The base size of the cell in pixels. */
 	sizePx: number;
+	/** The gap size between cells in pixels. */
 	gapPx: number;
+	/** * Border radius of the cell.
+	 * Can be a number (pixels) or a string (percentage, e.g., '50%').
+	 */
 	borderRadius: number | string;
+	/** Function to transform logical pixels for responsiveness. */
 	pxHandler: PxHandler;
 }
 
 /**
- * Считает геометрию одной клетки "клеточного" паттерна: размер, зазор,
- * шаг повторения и радиус скругления (borderRadius может быть в px или
- * в % от половины клетки).
+ * Calculates the geometry of a single cell in a grid pattern, including
+ * dimensions, gaps, repetition steps, and border radius.
  *
- * Используется в Checkboard / QuadsGrid / Quads.
+ * The `borderRadius` calculation handles both absolute pixel values and
+ * percentage-based values (relative to half the cell size).
  *
- * Важно: принимает объект целиком (а не деструктуризацию его полей),
- * чтобы доступ к полям внутри computed оставался реактивным.
+ * @remarks
+ * This composable expects an object with getters for its properties to maintain
+ * reactivity when accessed within the `computed` effect.
  *
- * Это не обязательно должен быть сам `props` — pxHandler теперь часто
- * приходит не из пропа, а из локального computed (proп ?? инжект из
- * VueKitPlugin), поэтому сюда передают объект-адаптер с геттерами:
- *
- *   useCellGeometry({
- *     get sizePx() { return props.sizePx; },
- *     get gapPx() { return props.gapPx; },
- *     get borderRadius() { return props.borderRadius; },
- *     get pxHandler() { return pxHandler.value; },
- *   });
- *
- * Геттеры читаются синхронно внутри тела computed-эффекта этого
- * composable, поэтому реактивные обращения (и к props, и к pxHandler
- * как к ref) трекаются корректно.
+ * @param props - An object providing reactive access to the cell configuration.
+ * @returns A computed object containing the calculated cell metrics.
+ * @example
+ * useCellGeometry({
+ * 	get sizePx() { return props.sizePx; },
+ * 	get gapPx() { return props.gapPx; },
+ * 	get borderRadius() { return props.borderRadius; },
+ * 	get pxHandler() { return pxHandler.value; },
+ * });
  */
 export function useCellGeometry(props: CellGeometryInput): ComputedRef<CellGeometry> {
 	return computed(() => {

@@ -1,3 +1,28 @@
+<script lang="ts">
+/**
+ * The `SquaresGrid` component renders a repeating square grid pattern within an SVG container.
+ * It provides control over cell size, gaps between cells, and corner rounding.
+ *
+ * @component
+ * @example
+ * Basic usage with default settings
+ * ```vue
+ * <SquaresGrid color="#333" />
+ * ```
+ *
+ * @example
+ * Custom grid pattern with rounded corners
+ * ```vue
+ * <SquaresGrid
+ * :sizePx="8"
+ * :gapPx="2"
+ * borderRadius="50%"
+ * color="#2ecc71"
+ * />
+ * ```
+ */
+export default {};
+</script>
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { PatternCellProps } from './types';

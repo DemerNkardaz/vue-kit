@@ -1,10 +1,41 @@
+<script lang="ts">
+/**
+ * The `FrameOutline` component renders a configurable outline frame.
+ * It supports two modes: 'full' (a rectangular frame) or 'direction' (a cross-like structure
+ * extending from a central axis). It allows precise control over side lengths,
+ * thickness, and corner rounding.
+ *
+ * @component
+ * @example
+ * Render a full rectangular frame
+ * ```vue
+ * <FrameOutline
+ * :length="100"
+ * :thicknessPx="4"
+ * color="#3498db"
+ * />
+ * ```
+ *
+ * @example
+ * Render a cross-shaped outline extending from the center
+ * ```vue
+ * <FrameOutline
+ * :directions="['top', 'bottom', 'left', 'right']"
+ * :lengthTop="50"
+ * :lengthLeft="50"
+ * thicknessPx="2"
+ * color="#2ecc71"
+ * />
+ * ```
+ */
+export default {};
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Direction, FrameOutlineProps } from './types';
 import { useVueKit } from '@/inject';
 import { useShapeFill } from '@/composables/useShapeFill';
-
-export type { Direction };
 
 type Props = FrameOutlineProps;
 

@@ -1,66 +1,63 @@
+import type { ColorProps, BackgroundFillProps, DimensionProps, FluidProps } from '@/types/shared';
+
 /**
- * Типы для компонентов паттернов (components/patterns/*).
- *
- * Кросс-каттинг куски (цвет, размеры, pxHandler) переехали в
- * `types/shared.ts`, т.к. ими пользуются и компоненты из
- * `components/primitives/*`, не имеющие никакого отношения к паттернам.
- * Здесь остаются только алиасы для обратной совместимости импортов и то,
- * что реально специфично для "клеточных" паттернов.
+ * Type aliases for pattern components.
+ * Shared properties (color, dimensions, pxHandler) are moved to `types/shared.ts`.
+ * This file maintains backward compatibility and defines structures specific to "cellular" patterns.
  */
-import type {
-	ColorProps,
-	BackgroundFillProps,
-	DimensionProps,
-	FluidProps,
-	PxHandler,
-} from '@/types/shared';
 
-export type { PxHandler };
-
-/** Управление цветом фигур паттерна и фоном под ним. */
+/** Manages the color of pattern shapes and their background. */
 export type PatternColorProps = ColorProps & BackgroundFillProps;
 
-/** Внешние размеры контейнера паттерна. */
+/** External dimensions of the pattern container. */
 export type PatternDimensionProps = DimensionProps;
 
-/** Поддержка адаптивных px-значений. */
+/** Support for adaptive pixel values. */
 export type PatternFluidProps = FluidProps;
 
 /**
- * Базовый набор пропсов для "клеточных" паттернов — построенных из
- * повторяющихся квадратов с зазором (Checkboard, QuadsGrid, Quads).
+ * Base set of properties for "cellular" patterns — structures built from
+ * repeating squares with gaps (e.g., Checkboard, QuadsGrid, Quads).
  */
 export interface PatternCellProps
 	extends PatternColorProps, PatternDimensionProps, PatternFluidProps {
+	/** Size of the cell in pixels. */
 	sizePx?: number;
+	/** Gap between cells in pixels. */
 	gapPx?: number;
+	/** Border radius of the cell (number in px or string in %). */
 	borderRadius?: number | string;
 }
 
-/** Результат расчёта геометрии одной "клетки" паттерна. */
+/** The result of a single "cell" geometry calculation. */
 export interface CellGeometry {
-	/** Размер стороны клетки в реальных px. */
+	/** Side length of the cell in actual pixels. */
 	cell: number;
-	/** Зазор между клетками в реальных px. */
+	/** Gap between cells in actual pixels. */
 	gap: number;
-	/** cell + gap — шаг повторения паттерна. */
+	/** The repetition step of the pattern (cell + gap). */
 	total: number;
-	/** Радиус скругления клетки в px. */
+	/** Border radius of the cell in pixels. */
 	rx: number;
 }
 
-/** Спецификация заполненных колонок в строке / строк в колонке (Quads). */
+/** Specification of populated columns in a row or rows in a column (for Quads). */
 export type RowSpec = number | number[];
 export type ColSpec = number | number[];
 
+/** Properties for the Quads pattern component. */
 export interface QuadsProps extends PatternCellProps {
 	row?: RowSpec[];
 	col?: ColSpec[];
 	count?: number;
 }
 
-export interface StripesProps extends PatternColorProps, PatternDimensionProps, PatternFluidProps {
+/** Properties for the Stripes pattern component. */
+export interface StripesProps extends ColorProps, BackgroundFillProps, DimensionProps, FluidProps {
+	/** Width of the individual stripes in pixels. */
 	stripesPx?: number;
+	/** Gap between stripes in pixels. */
 	gapPx?: number;
+	/** The angle of the stripes in degrees. */
 	angle?: number;
 }

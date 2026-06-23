@@ -1,4 +1,4 @@
-/** Генерирует уникальный id для <pattern> с заданным префиксом. */
+/** Generates a unique ID for a pattern. */
 export function generatePatternId(prefix: string): string {
 	return `${prefix}-${Math.random().toString(36).slice(2, 7)}`;
 }

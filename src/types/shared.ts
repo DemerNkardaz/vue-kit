@@ -1,36 +1,50 @@
 /**
- * Кросс-каттинг типы, общие для ЛЮБЫХ SVG-компонентов проекта —
- * и паттернов (components/patterns), и примитивов (components/primitives).
+ * Cross-cutting types shared across ALL SVG components in the project,
+ * including both patterns (components/patterns) and primitives (components/primitives).
  *
- * Здесь живёт только то, что встречается в 3+ независимых компонентах
- * с идентичной семантикой. Если поле специфично для одной "семьи"
- * компонентов (например, borderRadius с поддержкой '%' у паттернов,
- * или directions у FrameOutline) — оно остаётся в локальном types.ts
- * этой семьи, а не здесь.
+ * This file contains only shared properties that appear in 3+ independent
+ * component families with identical semantics. Properties specific to a single
+ * family (e.g., borderRadius with '%' support for patterns) remain in their
+ * respective local types.ts files.
  */
 
-/** Преобразует "логическое" px-значение в реальное (например, под адаптив/zoom). */
+/** * Converts a "logical" pixel value into a real pixel value,
+ * typically used for responsiveness or zoom scaling.
+ */
 export type PxHandler = (val: number) => number;
 
-/** Цвет фигуры и её прозрачность. */
+/** * Properties defining the foreground color and transparency of a shape.
+ */
 export interface ColorProps {
+	/** The fill or stroke color of the element. */
 	color?: string;
+	/** The opacity level, typically ranging from 0 to 1. */
 	opacity?: number;
 }
 
-/** Опциональный цвет фона под фигурой/паттерном. */
+/** * Properties defining an optional background fill behind a shape or pattern.
+ */
 export interface BackgroundFillProps {
+	/** The background color applied behind the component. */
 	bgColor?: string;
+	/** The opacity level for the background color. */
 	bgOpacity?: number;
 }
 
-/** Внешние размеры контейнера. */
+/** * Properties defining the physical dimensions of the container.
+ */
 export interface DimensionProps {
+	/** The width of the element (number for pixels, string for relative units). */
 	w?: number | string;
+	/** The height of the element (number for pixels, string for relative units). */
 	h?: number | string;
 }
 
-/** Поддержка адаптивных px-значений. */
+/** * Support for fluid/responsive pixel values.
+ */
 export interface FluidProps {
+	/** * An optional handler to transform pixel values based on the current
+	 * environment (e.g., font scale, screen size).
+	 */
 	pxHandler?: PxHandler;
 }

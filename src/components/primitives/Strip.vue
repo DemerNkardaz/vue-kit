@@ -1,3 +1,33 @@
+<script lang="ts">
+/**
+ * The `Strip` component renders a custom geometric shape defined by four corners
+ * and an optional border radius. It provides fine-grained control over corner
+ * positioning (offsets) and dimensions, making it suitable for creating complex
+ * graphical strips or custom UI elements.
+ *
+ * @component
+ * @example
+ * Basic rectangular strip
+ * ```vue
+ * <Strip :stripW="200" :stripH="20" color="#3498db" />
+ * ```
+ *
+ * @example
+ * Strip with modified top corners and border radius
+ * ```vue
+ * <Strip
+ * :stripW="100"
+ * :stripH="50"
+ * :borderRadius="8"
+ * :cornerTopLeft="[10, 0]"
+ * :cornerTopRight="[-10, 0]"
+ * color="#e74c3c"
+ * />
+ * ```
+ */
+export default {};
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { StripProps } from './types';

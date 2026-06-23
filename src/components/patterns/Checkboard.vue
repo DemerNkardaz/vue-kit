@@ -1,6 +1,32 @@
+<script lang="ts">
+/**
+ * The `Checkboard` component renders a repeating checkerboard grid pattern
+ * within an SVG container. It manages cell dimensions, gaps, and corner rounding.
+ *
+ * @component
+ * @example
+ * Basic usage
+ * ```vue
+ * <Checkboard color="#ccc" />
+ * ```
+ *
+ * @example
+ * Pattern with custom cell size and corner rounding
+ * ```vue
+ * <Checkboard
+ * :sizePx="10"
+ * :gapPx="2"
+ * borderRadius="4px"
+ * color="#2c3e50"
+ * />
+ * ```
+ */
+export default {};
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { PatternCellProps, PxHandler } from './types';
+import type { PatternCellProps } from './types';
 import { useVueKit } from '@/inject';
 import { useCellGeometry } from '@/composables/useCellGeometry';
 import { useShapeFill } from '@/composables/useShapeFill';
@@ -38,7 +64,7 @@ const geometry = useCellGeometry({
   get borderRadius() {
     return props.borderRadius;
   },
-  get pxHandler(): PxHandler {
+  get pxHandler() {
     return pxHandler.value;
   },
 });
@@ -50,8 +76,6 @@ const size = computed(() => ({
 
 const { fillColor, bgFill } = useShapeFill(props);
 
-// Стиль навешивается только тогда, когда контейнер не "тянется" на 100% —
-// сохраняем оригинальное поведение Checkboard (в отличие от QuadsGrid).
 const svgStyle = computed(() =>
   size.value.w !== '100%' || size.value.h !== '100%'
     ? { display: 'block', flexShrink: 0 }

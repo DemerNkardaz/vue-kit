@@ -1,3 +1,37 @@
+<script lang="ts">
+/**
+ * The `Squares` component renders a structured grid of rectangles (quads).
+ * The layout of filled cells is determined by row or column specifications.
+ *
+ * @component
+ * @example
+ * Basic usage with a 3x3 grid layout defined by rows
+ * ```vue
+ * <Squares
+ * :row="[1, 2, 3]"
+ * :count="3"
+ * :sizePx="20"
+ * :gapPx="4"
+ * color="#3498db"
+ * />
+ * ```
+ *
+ * @example
+ * Advanced usage with border radius and background color
+ * ```vue
+ * <Squares
+ * :col="[[1, 3], 2]"
+ * :count="5"
+ * :sizePx="16"
+ * borderRadius="25%"
+ * color="#e74c3c"
+ * bgColor="#f0f0f0"
+ * />
+ * ```
+ */
+export default {};
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { QuadsProps } from './types';
